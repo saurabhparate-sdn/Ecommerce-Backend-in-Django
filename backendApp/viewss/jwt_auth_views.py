@@ -18,7 +18,7 @@ from ..models import UserProfile
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
-# Utility to get tokens
+# function to get tokens
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
@@ -53,7 +53,6 @@ class LoginAuthView(APIView):
         password = request.data.get('password')
         try:
             user = authenticate(request, username=username, password=password)
-            print(user, "user")
             if user:
                 tokens = get_tokens_for_user(user)
                 profile = UserProfile.objects.get(user=user)
@@ -77,7 +76,7 @@ class ForgetPasswordView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        # 1️⃣ Get email from request
+        # Get email from request
         email = request.data.get('email')
 
         if not email:
@@ -87,14 +86,14 @@ class ForgetPasswordView(APIView):
         if not user:
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # 3️⃣ Generate password reset token and UID
+        # Generate password reset token and UID
         token = PasswordResetTokenGenerator().make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        # 4️⃣ Create password reset link (your frontend URL)
+        # Create password reset link (your frontend URL)
         reset_link = f"http://localhost:3000/reset-password/{uid}/{token}/"
 
-        # 5️⃣ Send email
+        # Send email
         subject = "Password Reset Request"
         message = (
             f"Hello {user.username},\n\n"
@@ -137,12 +136,10 @@ class UserProfileView(APIView):
 
     def get(self, request):
         userr = request.user
-        print(userr.id, "djfsdfkj")
         user_serializer = UserSerializer(request.user)
 
         try:
             profile = UserProfile.objects.get(user=request.user)
-            print(userr, "djfsdfkj")
         except ObjectDoesNotExist:
             # Optionally create a profile or return default response
             profile = UserProfile.objects.create(user=request.user)

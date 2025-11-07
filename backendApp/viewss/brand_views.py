@@ -12,7 +12,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 class CreateCategoryView(APIView):
 
     def get_permissions(self):
-        """Set different permissions for different HTTP methods."""
         if self.request.method == 'GET':
             return [AllowAny()]
         elif self.request.method in  ['POST','PUT', 'DELETE']:
