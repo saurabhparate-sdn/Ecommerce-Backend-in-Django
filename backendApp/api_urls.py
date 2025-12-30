@@ -9,6 +9,7 @@ from .viewss.discount_coupons_views import DiscountView, CreateCouponView, Valid
 from .viewss.review_views import DeleteReviewView, ProductReviewView
 from .viewss.notification_views import NotificationListView, MarkNotificationReadView, SendNotificationView
 from .viewss.payments_views import success, cancel, paymentView, stripe_webhook
+from .views import ping
 
 urlpatterns = [
 
@@ -66,5 +67,6 @@ urlpatterns = [
     path('webhook/', stripe_webhook.as_view(), name='webhook'),
     path('success/', success, name='success'),
     path('cancel/', cancel, name='cancel'),
+    path('ping/', ping, name='ping'),
 ]
 

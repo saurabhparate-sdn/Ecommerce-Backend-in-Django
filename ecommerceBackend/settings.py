@@ -191,7 +191,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'backendApp.cron.send_email'),
+    ('*/5 * * * *', 'backendApp.cron.ping_server'),
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

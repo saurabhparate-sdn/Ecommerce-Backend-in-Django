@@ -1,13 +1,12 @@
-# emailCron/cron.py
-from django.core.mail import send_mail
-from django.conf import settings
+import requests
 
-def send_email():
-    send_mail(
-        subject="Hello User!",
-        message="This email is sent every minute by Django cron job!",
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=["saurabhparate054@gmail.com", "paratesaurabh054@gmail.com"],
-        fail_silently=False,
-    )
-    print("Hello Saurabh email sent!")
+def ping_server():
+    try:
+        # Assuming localhost for cron; in production this might need the full domain
+        # Ideally, we read the domain from env or settings
+        # For this setup, we'll try localhost:8000
+        url = "http://127.0.0.1:8000/api/ping/"
+        response = requests.get(url)  
+        print(f"Ping server status: {response.status_code}")
+    except Exception as e:
+        print(f"Ping server failed: {str(e)}")
